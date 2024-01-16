@@ -9,7 +9,6 @@ More information about the Oracle UTL_SMTP package can be found [here](https://d
 * [Description](#description)
 * [Installation](#installation)
 * [Manage the extension](#manage-the-extension)
-* [Configuration](#configuration)
 * [Procedures](#procedures)
   - [OPEN_CONNECTION](#open_connection)
   - [EHLO](#ehlo)
