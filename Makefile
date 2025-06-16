@@ -4,7 +4,7 @@ EXTVERSION = $(shell grep default_version $(EXTENSION).control | \
 
 PGFILEDESC = "pg_utl_smtp - Propose Oracle UTL_SMTP compatibility for PostgreSQL"
 
-PG_CONFIG = /usr/lib/postgresql/15/bin/pg_config
+PG_CONFIG = pg_config
 PG10 = $(shell $(PG_CONFIG) --version | egrep " 8\.| 9\." > /dev/null && echo no || echo yes)
 
 ifeq ($(PG10),yes)
