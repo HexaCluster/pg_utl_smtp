@@ -2,7 +2,7 @@
 
 PostgreSQL extension to add compatibility to Oracle UTL_SMTP package.
 
-This extension uses `plperlu` stored procedures using Net::SMTP to provide the procedures of the UTL_SMTP package.
+This extension uses `plperlu` stored procedures based on the `Net::SMTP` Perl module to provide the procedures of the UTL_SMTP package.
 
 More information about the Oracle UTL_SMTP package can be found [here](https://docs.oracle.com/en/database/oracle/oracle-database/19/arpls/UTL_SMTP.html)
 
