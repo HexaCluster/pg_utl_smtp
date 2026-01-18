@@ -87,16 +87,13 @@ smtp      inet  n       -       y       -       -       smtpd
 ...
 smtps     inet  n       -       y       -       -       smtpd
 ```
-and to create a system user named gilles. If you want to use an existing system user you can
-change the tests to use this username with command:
-```
-grep -rl gilles test/ | xargs -i perl -p -i -e 's/gilles/username/' {}
-```
+and to create a system user named gilles.
 
 Test of the extension can be run using:
 ```
     make installcheck
 ```
+You may find the email sent into file  /var/spool/mail/$USERNAME
 
 ## [Manage the extension](#manage-the-extension)
 
