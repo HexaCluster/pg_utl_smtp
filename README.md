@@ -87,7 +87,6 @@ smtp      inet  n       -       y       -       -       smtpd
 ...
 smtps     inet  n       -       y       -       -       smtpd
 ```
-and to create a system user named gilles.
 
 Test of the extension can be run using:
 ```
