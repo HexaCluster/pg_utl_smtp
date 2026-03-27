@@ -59,7 +59,7 @@ COMMENT ON FUNCTION utl_smtp.open_connection(varchar, integer, integer, varchar,
     IS 'Open a connection to an SMTP server. Returns the connection (see data type utl_smtp.connection).';
 REVOKE ALL ON FUNCTION utl_smtp.open_connection FROM PUBLIC;
 
-CREATE PROCEDURE utl_smtp.ehlo (c INOUT utl_smtp.connection, domain IN varchar)
+CREATE PROCEDURE utl_smtp.ehlo (c IN utl_smtp.connection, domain IN varchar)
     LANGUAGE plperlu
     AS $code$
 	my ($conn, $domain) = @_;
@@ -71,7 +71,7 @@ CREATE PROCEDURE utl_smtp.ehlo (c INOUT utl_smtp.connection, domain IN varchar)
 	}
 
 $code$;
-COMMENT ON PROCEDURE utl_smtp.ehlo (c INOUT utl_smtp.connection, domain IN varchar)
+COMMENT ON PROCEDURE utl_smtp.ehlo (c IN utl_smtp.connection, domain IN varchar)
     IS 'Performs the initial handshake with SMTP server using the EHLO command and return the reply of the command (see type utl_smtp.reply).';
 REVOKE ALL ON PROCEDURE utl_smtp.ehlo FROM PUBLIC;
 
@@ -160,7 +160,7 @@ CREATE PROCEDURE utl_smtp.open_data (c IN utl_smtp.connection)
 	}
 
 $code$;
-COMMENT ON PROCEDURE utl_smtp.open_data (c INOUT utl_smtp.connection)
+COMMENT ON PROCEDURE utl_smtp.open_data (c IN utl_smtp.connection)
     IS 'Sends the DATA command after which you can use write_data() and write_raw_data() to write a portion of the e-mail message.';
 REVOKE ALL ON PROCEDURE utl_smtp.open_data FROM PUBLIC;
 
