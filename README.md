@@ -1,5 +1,7 @@
 # pg_utl_smtp
 
+[![CI](https://github.com/HexaCluster/pg_utl_smtp/actions/workflows/ci.yml/badge.svg)](https://github.com/HexaCluster/pg_utl_smtp/actions/workflows/ci.yml)
+
 PostgreSQL extension to add compatibility to Oracle UTL_SMTP package.
 
 This extension uses `plperlu` stored procedures based on the `Net::SMTP` Perl module to provide the procedures of the UTL_SMTP package.
@@ -133,6 +135,19 @@ Test of the extension can be run using:
     make installcheck
 ```
 With postfix you may find the email sent into file /var/spool/mail/$USERNAME
+
+The regression tests are run by GitHub Actions on every push and pull
+request against PostgreSQL 11 to 19 (`.github/workflows/ci.yml`). The same
+scripts can be used to run the tests locally in a temporary instance, with
+pg_dbms_job and pg_utl_smtp installed, as a non-root user with sudo:
+```
+    ci/start_smtp_server.sh
+    PG_CONFIG=/usr/lib/postgresql/18/bin/pg_config ci/run_tests.sh
+```
+`ci/start_smtp_server.sh` generates the test certificates and starts the test
+SMTP server, `ci/run_tests.sh` creates an instance in `tmp_check/` listening on
+port 55432 (PGPORT) with pg_dbms_job loaded, runs `make installcheck` and shows
+the differences and the server logs on failure.
 
 ## [Manage the extension](#manage-the-extension)
 

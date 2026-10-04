@@ -20,6 +20,11 @@
   - Raise the minimum PostgreSQL version to 11, the extension uses
     procedures.
   - Fix package name for yum in documentation.
+  - Add GitHub Actions regression tests with PostgreSQL 11 to 19, using
+    pg_dbms_job and the test SMTP server, scripts ci/start_smtp_server.sh
+    and ci/run_tests.sh can also be used locally.
+  - Fix make installcheck doing nothing when PostgreSQL is built without
+    TAP tests support (empty PROVE variable).
   - Add a test SMTP server (test/smtp_test_server.py) and tests of SMTP
     errors and of SSL/TLS connections.
 
