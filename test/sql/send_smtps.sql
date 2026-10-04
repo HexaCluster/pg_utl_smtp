@@ -1,8 +1,10 @@
+-- psql variables are not interpolated in DO blocks
+SELECT set_config('regress.smtps_ca', :'smtps_ca', false) IS NOT NULL AS ok, set_config('regress.smtps_host', :'smtps_host', false) IS NOT NULL AS ok;
 DO $$
 DECLARE
   c UTL_SMTP.CONNECTION;
 BEGIN
-  c := UTL_SMTP.OPEN_CONNECTION('localhost', 465);
+  c := UTL_SMTP.OPEN_CONNECTION('localhost', 465, NULL, current_setting('regress.smtps_ca'), NULL, true, current_setting('regress.smtps_host'));
   IF c.private_tcp_con IS NOT NULL THEN
     RAISE NOTICE 'Connection successful';
     RAISE NOTICE 'HELO';
