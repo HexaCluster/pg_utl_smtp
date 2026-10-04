@@ -1,3 +1,32 @@
+2026-10-04: Version 1.1.0
+
+  - Add asynchronous mode enabled with setting pg_utl_smtp.asynchronous.
+    Messages are stored into table utl_smtp.mail_queue at CLOSE_DATA and
+    sent by a pg_dbms_job asynchronous job, only if the transaction
+    commits. Add function utl_smtp.async_resend() to submit again a
+    message whose sending has failed.
+  - Raise an error when the SMTP server returns an error to HELO/EHLO, MAIL,
+    RCPT, DATA, end of DATA or QUIT. These errors were silently ignored, the
+    message was lost without notice.
+  - Fix duplicate EHLO sent at connection: SendHello was set to the bareword
+    false, which is a true string in Perl, so Net::SMTP sent an EHLO with
+    the local host name before the one requested with HELO()/EHLO().
+  - Implement SSL/TLS connections (secure_connection_before_smtp), the
+    parameter was evaluated as a true string even when false and SSL was
+    never used. The server certificate is verified, secure_host gives the
+    name to match and wallet_path a CA file or directory.
+  - QUIT releases the connection, a second QUIT raises an error.
+  - When the connection can not be established the WARNING gives the reason.
+  - Raise the minimum PostgreSQL version to 11, the extension uses
+    procedures.
+  - Fix package name for yum in documentation.
+  - Add a test SMTP server (test/smtp_test_server.py) and tests of SMTP
+    errors and of SSL/TLS connections.
+
+  To upgrade an installed version 1.0.0 execute:
+
+      ALTER EXTENSION pg_utl_smtp UPDATE;
+
 2026-01-18: Version 1.0.0
 
   - Initial release

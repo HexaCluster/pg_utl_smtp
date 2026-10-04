@@ -1,0 +1,69 @@
+TRUNCATE TABLE
+SET
+psql:test/sql/send_smtp_async.sql:7: ERROR:  invalid value for parameter "pg_utl_smtp.asynchronous": "maybe" at line 22.
+SET
+BEGIN
+psql:test/sql/send_smtp_async.sql:29: NOTICE:  private_state = 1
+DO
+ queued_in_xact 
+----------------
+              1
+(1 row)
+
+ROLLBACK
+ queued_after_rollback 
+-----------------------
+                     0
+(1 row)
+
+DO
+ has_id |  sender  |      recipients      | status | has_job 
+--------+----------+----------------------+--------+---------
+ t      | postgres | {postgres@localhost} | queued | t
+ t      | postgres | {reject@localhost}   | queued | t
+(2 rows)
+
+DO
+      recipients      | status | attempts | has_sent_date |                       last_error                       
+----------------------+--------+----------+---------------+--------------------------------------------------------
+ {postgres@localhost} | sent   |        1 | t             | 
+ {reject@localhost}   | failed |        1 | f             | RCPT <reject@localhost> failed: 550 5.1.1 user unknown
+(2 rows)
+
+ ok | ok 
+----+----
+ t  | t
+(1 row)
+
+DO
+DO
+ port | secure | same_ca | status | last_error 
+------+--------+---------+--------+------------
+  465 | t      | t       | sent   | 
+(1 row)
+
+ resubmitted 
+-------------
+ t
+(1 row)
+
+DO
+     recipients     | status | attempts 
+--------------------+--------+----------
+ {reject@localhost} | failed |        2
+(1 row)
+
+psql:test/sql/send_smtp_async.sql:108: ERROR:  queued message 2 does not exist or is not in failed state
+psql:test/sql/send_smtp_async.sql:114: ERROR:  UTL_SMTP: RCPT called before MAIL at line 10.
+psql:test/sql/send_smtp_async.sql:119: ERROR:  UTL_SMTP: OPEN_DATA called without any RCPT at line 7.
+psql:test/sql/send_smtp_async.sql:123: ERROR:  UTL_SMTP: WRITE_DATA called before OPEN_DATA at line 9.
+psql:test/sql/send_smtp_async.sql:131: WARNING:  UTL_SMTP: QUIT called with an open DATA session, the message is discarded
+DO
+SET
+psql:test/sql/send_smtp_async.sql:145: NOTICE:  private_state = 0
+DO
+ queued 
+--------
+      3
+(1 row)
+

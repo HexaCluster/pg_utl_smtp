@@ -1,0 +1,9 @@
+psql:test/sql/send_smtp.sql:31: NOTICE:  Connection successful
+psql:test/sql/send_smtp.sql:31: NOTICE:  HELO
+psql:test/sql/send_smtp.sql:31: NOTICE:  MAIL
+psql:test/sql/send_smtp.sql:31: NOTICE:  RCPT
+psql:test/sql/send_smtp.sql:31: NOTICE:  OPEN_DATA
+psql:test/sql/send_smtp.sql:31: NOTICE:  WRITE_DATA
+psql:test/sql/send_smtp.sql:31: NOTICE:  CLOSE_DATA
+psql:test/sql/send_smtp.sql:31: NOTICE:  QUIT
+DO
