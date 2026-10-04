@@ -19,5 +19,6 @@ endif
 PGXS := $(shell $(PG_CONFIG) --pgxs)
 include $(PGXS)
 
+# PROVE is empty when PostgreSQL was built without TAP tests support
 installcheck:
-	$(PROVE)
+	$(or $(PROVE),prove) t/

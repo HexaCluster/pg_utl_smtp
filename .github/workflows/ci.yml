@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  regression:
+    name: PostgreSQL ${{ matrix.pgversion }}
+    runs-on: ${{ matrix.os }}
+
+    defaults:
+      run:
+        shell: bash
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # The PGDG repository of Ubuntu 24.04 may not provide these
+          # versions, use Ubuntu 22.04
+          - { pgversion: 11, os: ubuntu-22.04 }
+          - { pgversion: 12, os: ubuntu-22.04 }
+          - { pgversion: 13, os: ubuntu-24.04 }
+          - { pgversion: 14, os: ubuntu-24.04 }
+          - { pgversion: 15, os: ubuntu-24.04 }
+          - { pgversion: 16, os: ubuntu-24.04 }
+          - { pgversion: 17, os: ubuntu-24.04 }
+          - { pgversion: 18, os: ubuntu-24.04 }
+          - { pgversion: 19, os: ubuntu-24.04 }
+
+    env:
+      PGVERSION: ${{ matrix.pgversion }}
+      PG_CONFIG: /usr/lib/postgresql/${{ matrix.pgversion }}/bin/pg_config
+
+    steps:
+    - name: Checkout pg_utl_smtp
+      uses: actions/checkout@v4
+
+    - name: Checkout pg_dbms_job
+      uses: actions/checkout@v4
+      with:
+        repository: MigOpsRepos/pg_dbms_job
+        path: pg_dbms_job
+
+    - name: Install PostgreSQL and dependencies
+      run: |
+        sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -v "$PGVERSION" -p -i
+        sudo apt-get install -y "postgresql-plperl-$PGVERSION" libio-socket-ssl-perl python3-aiosmtpd
+        perl -MNet::SMTP -MIO::Socket::SSL -e 'print "Net::SMTP $Net::SMTP::VERSION, IO::Socket::SSL $IO::Socket::SSL::VERSION\n"'
+
+    - name: Build and install pg_dbms_job
+      run: |
+        make -C pg_dbms_job PG_CONFIG="$PG_CONFIG"
+        sudo make -C pg_dbms_job install PG_CONFIG="$PG_CONFIG"
+
+    - name: Build and install pg_utl_smtp
+      run: |
+        make PG_CONFIG="$PG_CONFIG"
+        sudo make install PG_CONFIG="$PG_CONFIG"
+
+    - name: Start the test SMTP server
+      run: ci/start_smtp_server.sh
+
+    - name: Run regression tests
+      run: ci/run_tests.sh
+
+    - name: Upload test results
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: regression-pg${{ matrix.pgversion }}
+        path: |
+          results/
+          tmp_check/*.log
+          tmp_check/mails/
+        if-no-files-found: ignore
