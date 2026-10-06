@@ -160,14 +160,14 @@ as the `plperlu` language.
 
 To upgrade to a new version execute:
 ```
-    psql -d mydb -c 'ALTER EXTENSION pg_utl_smtp UPDATE TO "1.1.0"'
+    psql -d mydb -c 'ALTER EXTENSION pg_utl_smtp UPDATE TO "2.0.0"'
 ```
 
 If you doesn't have the privileges to create an extension, you can just import
 the extension file into the database, for example:
 
     psql -d mydb -c "CREATE SCHEMA utl_smtp;"
-    psql -d mydb -f sql/pg_utl_smtp--1.1.0.sql
+    psql -d mydb -f sql/pg_utl_smtp--2.0.0.sql
 
 This is especially useful for database in DBaas cloud services.
 To upgrade just import the extension upgrade files using psql.

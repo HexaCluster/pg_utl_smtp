@@ -1,4 +1,4 @@
-2026-10-04: Version 1.1.0
+2026-10-06: Version 2.0.0
 
   - Add asynchronous mode enabled with setting pg_utl_smtp.asynchronous.
     Messages are stored into table utl_smtp.mail_queue at CLOSE_DATA and
@@ -27,8 +27,9 @@
     TAP tests support (empty PROVE variable).
   - Add a test SMTP server (test/smtp_test_server.py) and tests of SMTP
     errors and of SSL/TLS connections.
+  - Add regression tests by GitHub Actions.
 
-  To upgrade an installed version 1.0.0 execute:
+  To upgrade an installed version 2.0.0 execute:
 
       ALTER EXTENSION pg_utl_smtp UPDATE;
 

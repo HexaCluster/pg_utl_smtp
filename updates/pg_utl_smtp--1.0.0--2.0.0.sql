@@ -1,5 +1,5 @@
 ----
--- Upgrade pg_utl_smtp from 1.0.0 to 1.1.0
+-- Upgrade pg_utl_smtp from 1.0.0 to 2.0.0
 ----
 
 ----
