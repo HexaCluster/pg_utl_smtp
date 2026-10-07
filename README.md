@@ -151,11 +151,10 @@ the differences and the server logs on failure.
 
 ## [Manage the extension](#manage-the-extension)
 
-Each database that needs to use `pg_utl_smtp` must creates the extension as well
-as the `plperlu` language.
+Each database that needs to use `pg_utl_smtp` must create the extension. It
+requires the `plperlu` language, which `CASCADE` creates if needed.
 ```
-    psql -d mydb -c "CREATE EXTENSION plperlu"
-    psql -d mydb -c "CREATE EXTENSION pg_utl_smtp"
+    psql -d mydb -c "CREATE EXTENSION pg_utl_smtp CASCADE"
 ```
 
 To upgrade to a new version execute:
